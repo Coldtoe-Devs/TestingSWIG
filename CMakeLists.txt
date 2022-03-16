@@ -1,6 +1,9 @@
 # This is a CMake example for Python
 
-SET(SWIG_OUTFILE_DIR mypackage/)
+SET(OUTPUT_DIR mypackage/)
+SET(OUTFILE_DIR mypackage/)
+set(CMAKE_SWIG_OUTDIR mypackage/)
+
 
 FIND_PACKAGE(SWIG REQUIRED)
 INCLUDE(${SWIG_USE_FILE})
@@ -12,9 +15,12 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 SET(CMAKE_SWIG_FLAGS "")
 
+## FOR EACH:
 SET_SOURCE_FILES_PROPERTIES(mypackage/cameron.i PROPERTIES C ON)
 SET_SOURCE_FILES_PROPERTIES(mypackage/cameron.i PROPERTIES SWIG_FLAGS "-includeall")
-swig_add_library(cameron TYPE SHARED LANGUAGE python SOURCES mypackage/cameron.i)
+swig_add_library(cameron TYPE SHARED LANGUAGE python SOURCES mypackage/cameron.i mypackage/cameron.c)
+# NOTE the _ before library name:
+set_target_properties(_cameron PROPERTIES LIBRARY_OUTPUT_DIRECTORY "mypackage/")
 SWIG_LINK_LIBRARIES(cameron ${PYTHON_LIBRARIES})
 
 
