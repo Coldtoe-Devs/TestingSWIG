@@ -13,7 +13,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 SET(CMAKE_SWIG_FLAGS "")
 
 
-## FOR EACH:
+## FOR EACH .c/.h FILE PAIR:
 # cameron
 swig_add_library(cameron TYPE SHARED LANGUAGE python SOURCES mypackage/cameron.i mypackage/cameron.c)
 set_target_properties(_cameron PROPERTIES LIBRARY_OUTPUT_DIRECTORY "mypackage/")
