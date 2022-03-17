@@ -42,6 +42,8 @@ If you need to add another .h and .c pair to `mypackage`:
 
 1) Create a file.i file with it. Same name as the .c and .h, with these contents:
 
+    I think this is where `casting a pointer` logic goes, so we might not be able to generate these files automatically:
+
     ```txt
     %module <name>
     %{                // This adds the include to the generated wrapper.
