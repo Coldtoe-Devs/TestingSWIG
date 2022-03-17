@@ -1,15 +1,10 @@
 # Notes on Generating Bindings
 
-(Using `SWIG`)
+Swig generates bindings for a whole lot of languages, including python. Once you get one figured out, someone should be able to tell SWIG to generate java/perl/ruby etc with **very** minimal effort.
 
-To compile:
+This repo is for learning SWIG, getting it as automated as possible, and learning how SWIG want's you to handle pointers. (From what I can tell so far, you declare how to cast the pointers in the *.i files)
 
-```bash
-gcc -Wall mypackage/cameron.c mypackage/demo.c mypackage/main.c -o test
-./test
-```
-
-To download SWIG:
+## To download SWIG
 
 Go to `http://www.swig.org/download.html`.
 
@@ -24,31 +19,50 @@ sudo make install
 # DONE!!
 ```
 
-## Generate helper *_wrap.c files
+## Generate Python Bindings
 
 ```bash
-swig -python mypackage/demo.i
-swig -python mypackage/cameron.i
-# Now inside mypackage: creates demo_wrap.c and demo.py! Same file variants for "cameron.c" too.
+<cd to root of this repo>
+cmake .
+make all
 ```
 
-## Generate wrapped C code
-
-```bash
-# Needs the *_wrap.c files from last step
-python setup.py build_ext --inplace
-```
-
-This generates the _module.*.so inside project root. Need to move into mypackage, then you can:
+Then you can run python!
 
 ```python
-import mypackage.cameron as cameron
+from mypackage import cameron
 cameron.add3(6)
 >>> 9
+# NOTE: there's cameron.getArray(), which should return something like [0,1,2,3,4,5,6,7,8,9]. Haven't got pointers figured out yet though. Basic functions like the one above work great.
 ```
 
-This is great!! "mypackage" will be "libvirtclient", so it can still be separate from "libvirtserver".
+## Developers: To add another file to the library
 
-## Add this all to a cmake project
+If you need to add another .h and .c pair to `mypackage`:
 
-TODO
+1) Create a file.i file with it. Same name as the .c and .h, with these contents:
+
+    ```txt
+    %module <name>
+    %{                // This adds the include to the generated wrapper.
+    #include "<name>.h"
+    %}
+    %include "<name>.h"    // This *processes* the include and makes wrappers.
+    ```
+
+2) Add this block to the end of the CMakeLists.txt
+
+    NOTE: There HAS to be a way to automate/for-loop this, based on a include list. I just haven't looked.
+
+    ```txt
+    swig_add_library(<name> TYPE SHARED LANGUAGE python SOURCES mypackage/<name>.i mypackage/<name>.c)
+    # NOTE the underscore before the name!!!
+    set_target_properties(_<name> PROPERTIES LIBRARY_OUTPUT_DIRECTORY "mypackage/")
+    SWIG_LINK_LIBRARIES(<name> ${PYTHON_LIBRARIES})
+    ```
+
+## Main TODO's to figure out
+
+- How to handle C pointers, and declare how to cast them in SWIG.
+
+- How to simplify CMakeLists.txt, so you don't need 3 lines of code for each .c/.h pair.
