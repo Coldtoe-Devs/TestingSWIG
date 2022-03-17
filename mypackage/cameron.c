@@ -1,6 +1,7 @@
 #include "cameron.h"
 
 #include <stdio.h>
+#include <time.h>
 
 int add3(int x) {
     return x + 3;
@@ -19,4 +20,17 @@ int getNumber()
 	printf("\nYou have entered: %s\n", text);
 
 	return 0;
+}
+
+int * getArray( ) {
+
+	static int  r[10];
+	int i;
+
+	for ( i = 0; i < 10; ++i)
+	{
+		r[i] = i;
+	}
+
+	return r;
 }

@@ -4,3 +4,5 @@
 int add3(int x);
 
 int getNumber();
+
+int * getArray();
