@@ -66,3 +66,5 @@ If you need to add another .h and .c pair to `mypackage`:
 - How to handle C pointers, and declare how to cast them in SWIG.
 
 - How to simplify CMakeLists.txt, so you don't need 3 lines of code for each .c/.h pair.
+
+- Add another `mypackage` directory, along with a shared directory they both import from. Make sure SWIG can handle libvnc's use case of a `common` dir that two libraries import from.
