@@ -70,3 +70,8 @@ If you need to add another .h and .c pair to `mypackage`:
 - How to simplify CMakeLists.txt, so you don't need 3 lines of code for each .c/.h pair.
 
 - Add another `mypackage` directory, along with a shared directory they both import from. Make sure SWIG can handle libvnc's use case of a `common` dir that two libraries import from.
+
+### Useful links to do so
+
+- Swig official documentation: <http://www.swig.org/Doc4.0/Python.html>
+- Slideshow (around pg 32 talks about pointers): <http://www.swig.org/papers/PyTutorial98/PyTutorial98.pdf>
